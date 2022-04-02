@@ -31,6 +31,9 @@ class CatController extends Controller
                     case 'secciones':
                         $data[$cat] = $obj->getSections();
                         break;
+                    case 'usuarios':
+                        $data[$cat] = $obj->getCapturistUser();
+                        break;
                 }
             }
             return response()->json(['success' => true, 'data' => $data], 200);

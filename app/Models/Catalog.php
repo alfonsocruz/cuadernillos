@@ -44,4 +44,15 @@ class Catalog extends Model
             return [];
         }
     }
+
+    public function getCapturistUser(){
+        try{
+            $data = DB::table('users')->select('id AS value', 'name AS text')->where('role_id', 3)->get();
+            $response = collect([['value' => 0, 'text' => 'Todos']]);
+            $response = $response->merge($data);
+            return $response;
+        }catch(Exception $e){
+            return [];
+        }
+    }
 }

@@ -37,11 +37,12 @@ class CuadernillosController extends Controller
         $orderBy = $request->dir; // ASC | DESC
         $searchValue = $request->search;
         
-        $select = "cat_casillas.*, cat_region.Clave, cat_region.Region, cat_df.DistritoFederal, cat_dl.DistritoLocal, cat_municipios_reportes.Municipio";
+        $select = "cat_casillas.*, cat_region.Clave, cat_region.Region, cat_df.DistritoFederal, cat_dl.DistritoLocal, cat_municipios_reportes.Municipio, users.name";
         $query = Cuadernillo::leftJoin('cat_region', 'cat_region.id', '=', 'cat_casillas.idRegion')
                             ->leftJoin('cat_df', 'cat_df.id', '=', 'cat_casillas.idDF')
                             ->leftJoin('cat_dl', 'cat_dl.id', '=', 'cat_casillas.idDL')
                             ->leftJoin('cat_municipios_reportes', 'cat_municipios_reportes.id', '=', 'cat_casillas.idMunicipioReportes')
+                            ->leftJoin('users', 'users.id', '=', 'cat_casillas.UserUpdate')
                             ->selectRaw($select);
         if($sortBy === 'id'){
             $query->orderBy('updated_at', 'desc');
@@ -71,6 +72,11 @@ class CuadernillosController extends Controller
             if(isset($filters['Seccion'])){
                 if($filters['Seccion'] > 0){
                     $query->where("cat_casillas.Seccion", $filters['Seccion']);
+                }
+            }
+            if(isset($filters['UserUpdate'])){
+                if($filters['UserUpdate'] > 0){
+                    $query->where("cat_casillas.UserUpdate", $filters['UserUpdate']);
                 }
             }
         }

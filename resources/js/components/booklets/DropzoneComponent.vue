@@ -33,7 +33,7 @@ export default {
   data: () => ({
     dropOptions: {
       url: "https://fake.com/post",
-      maxFilesize: 100, // MB
+      maxFilesize: 500, // MB
       maxFiles: 1,
       // chunking: true,
       // chunkSize: 500, // Bytes
@@ -76,10 +76,14 @@ export default {
         })
         .then((response) => {
           if (response.success) {
-            swal.fire({ title: "Almacenado con éxito", icon: "success" });
-            this.removeAllFiles();
-            document.getElementById("closeModal").click;
-            location.reload();
+
+            swal.fire({ title: "Almacenado con éxito", icon: "success" }).then((result) => {
+			        if (result.isConfirmed) {
+                this.removeAllFiles();
+                document.getElementById("closeModal").click;
+                location.reload();  
+			        }
+		        })
           } else {
             swal.fire({ title: response.error, icon: "warning" });
           }

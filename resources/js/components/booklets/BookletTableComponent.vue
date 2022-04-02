@@ -17,7 +17,7 @@
                     <option :key="page" v-for="page in perPage">{{ page }}</option>
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label>Región </label>
                 <select
                     v-model="tableFilters.filters.idRegion"
@@ -25,7 +25,7 @@
                     <option v-for="region in catRegions" :value="region.value">{{region.text}}</option>
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label>Municipio </label>
                 <select
                     v-model="tableFilters.filters.idMunicipioReportes"
@@ -39,6 +39,14 @@
                     v-model="tableFilters.filters.Seccion"
                     class="form-control">
                     <option v-for="seccion in catSections" :value="seccion.value">{{seccion.text}}</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label>Usuario</label>
+                <select
+                    v-model="tableFilters.filters.UserUpdate"
+                    class="form-control">
+                    <option v-for="user in catUsers" :value="user.value">{{user.text}}</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -146,6 +154,11 @@ export default {
           name: "NombreArchivo",
           orderable: true,
         },
+        {
+          label: "Usuario",
+          name: "name",
+          orderable: true,
+        },
       ],
       filters: {
         TieneCuadernillo: '',
@@ -159,7 +172,8 @@ export default {
       },
       catRegions: [],
       catMunicipalities: [],
-      catSections: []
+      catSections: [],
+      catUsers: []
     };
   },
   created() {
@@ -200,7 +214,7 @@ export default {
     getCatalogs(){
         axios
         .post('/admin/catalogs/get', {
-          catalogs: ['regiones', 'municipios_reportes', 'secciones'],
+          catalogs: ['regiones', 'municipios_reportes', 'secciones', 'usuarios'],
         })
         .then((res) => {
           return res.data;
@@ -210,6 +224,7 @@ export default {
             this.catRegions = res.data['regiones'] ? res.data['regiones'] : [];
             this.catMunicipalities = res.data['municipios_reportes'] ? res.data['municipios_reportes']: [];
             this.catSections = res.data['secciones'] ? res.data['secciones']: [];
+            this.catUsers = res.data['usuarios'] ? res.data['usuarios']: [];
           }else{
             swal.fire({ title: response.error, icon: "warning" });
           }
