@@ -79,6 +79,7 @@ export default {
             swal.fire({ title: "Almacenado con éxito", icon: "success" });
             this.removeAllFiles();
             document.getElementById("closeModal").click;
+            location.reload();
           } else {
             swal.fire({ title: response.error, icon: "warning" });
           }

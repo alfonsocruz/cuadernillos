@@ -42,8 +42,12 @@ class CuadernillosController extends Controller
                             ->leftJoin('cat_df', 'cat_df.id', '=', 'cat_casillas.idDF')
                             ->leftJoin('cat_dl', 'cat_dl.id', '=', 'cat_casillas.idDL')
                             ->leftJoin('cat_municipios_reportes', 'cat_municipios_reportes.id', '=', 'cat_casillas.idMunicipioReportes')
-                            ->selectRaw($select)
-                            ->orderBy($sortBy, $orderBy);
+                            ->selectRaw($select);
+        if($sortBy === 'id'){
+            $query->orderBy('updated_at', 'desc');
+        }else{
+            $query->orderBy($sortBy, $orderBy);
+        }
         
         $filters = $request->filters;
         if (isset($filters)) 
@@ -176,20 +180,21 @@ class CuadernillosController extends Controller
             }
             $filename   = sprintf("%s_%s_%s.%s", $municipio, $seccion, $casilla, $ext);
             $dir        = "files/cuadernillos";
-            if(!Storage::disk('public')->exists($dir))
+            if(!Storage::disk('hd')->exists($dir))
             {
-                File::makeDirectory(Storage::disk('public')->path($dir), 0777, true, true);
+                File::makeDirectory(Storage::disk('hd')->path($dir), 0777, true, true);
             }
 
             $path       = sprintf("%s/%s", $dir, $filename);
-            $newpath = Storage::disk('public')->path($path);
+            $newpath = Storage::disk('hd')->path($path);
             File::copy($tmp_path, $newpath);
             File::delete($tmp_path);
-            if(Storage::disk('public')->exists($path)){
+            if(Storage::disk('hd')->exists($path)){
                 $flag = true;
                 $queryData->TieneCuadernillo = 1;
                 $queryData->NombreArchivo = $filename;
                 $queryData->UserUpdate = Auth::id();
+                $queryData->updated_at = date('Y-m-d H:i:s');
                 $queryData->save();
             }else{
                 $flag = true;
