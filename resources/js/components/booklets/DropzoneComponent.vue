@@ -33,7 +33,7 @@ export default {
   data: () => ({
     dropOptions: {
       url: "https://fake.com/post",
-      maxFilesize: 30, // MB
+      maxFilesize: 100, // MB
       maxFiles: 1,
       // chunking: true,
       // chunkSize: 500, // Bytes
