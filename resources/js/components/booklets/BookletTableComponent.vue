@@ -33,7 +33,7 @@
                     <option v-for="mun in catMunicipalities" :value="mun.value">{{mun.text}}</option>
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <label>Sección</label>
                 <select
                     v-model="tableFilters.filters.Seccion"
@@ -47,6 +47,14 @@
                     v-model="tableFilters.filters.UserUpdate"
                     class="form-control">
                     <option v-for="user in catUsers" :value="user.value">{{user.text}}</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label>DF</label>
+                <select
+                    v-model="tableFilters.filters.idDF"
+                    class="form-control">
+                    <option v-for="df in catDFs" :value="df.value">{{df.text}}</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -96,11 +104,11 @@ export default {
       },
       perPage: ["10", "20", "50", "100"],
       columns: [
-        {
-          label: "DF",
-          name: "idDF",
-          orderable: true,
-        },
+        // {
+        //   label: "DF",
+        //   name: "idDF",
+        //   orderable: true,
+        // },
         {
           label: "DL",
           name: "idDL",
@@ -114,6 +122,11 @@ export default {
         {
           label: "Municipio",
           name: "Municipio",
+          orderable: true,
+        },
+        {
+          label: "Distrito",
+          name: "DistritoFederal",
           orderable: true,
         },
         {
@@ -173,7 +186,8 @@ export default {
       catRegions: [],
       catMunicipalities: [],
       catSections: [],
-      catUsers: []
+      catUsers: [],
+      catDFs: []
     };
   },
   created() {
@@ -214,7 +228,7 @@ export default {
     getCatalogs(){
         axios
         .post('/admin/catalogs/get', {
-          catalogs: ['regiones', 'municipios_reportes', 'secciones', 'usuarios'],
+          catalogs: ['regiones', 'municipios_reportes', 'secciones', 'usuarios', 'dfs'],
         })
         .then((res) => {
           return res.data;
@@ -225,6 +239,7 @@ export default {
             this.catMunicipalities = res.data['municipios_reportes'] ? res.data['municipios_reportes']: [];
             this.catSections = res.data['secciones'] ? res.data['secciones']: [];
             this.catUsers = res.data['usuarios'] ? res.data['usuarios']: [];
+            this.catDFs = res.data['dfs'] ? res.data['dfs']: [];
           }else{
             swal.fire({ title: response.error, icon: "warning" });
           }

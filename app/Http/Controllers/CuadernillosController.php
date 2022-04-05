@@ -64,6 +64,11 @@ class CuadernillosController extends Controller
                     $query->where("cat_casillas.idRegion", $filters['idRegion']);
                 }
             }
+            if(isset($filters['idDF'])){
+                if($filters['idDF'] > 0){
+                    $query->where("cat_casillas.idDF", $filters['idDF']);
+                }
+            }
             if(isset($filters['idMunicipioReportes'])){
                 if($filters['idMunicipioReportes'] > 0){
                     $query->where("cat_casillas.idMunicipioReportes", $filters['idMunicipioReportes']);

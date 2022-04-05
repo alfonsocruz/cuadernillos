@@ -55,4 +55,15 @@ class Catalog extends Model
             return [];
         }
     }
+
+    public function getDfs(){
+        try{
+            $data = DB::table('cat_df')->select('id AS value', 'DistritoFederal AS text')->where('id', '>', 1)->get();
+            $response = collect([['value' => 0, 'text' => 'Todos']]);
+            $response = $response->merge($data);
+            return $response;
+        }catch(Exception $e){
+            return [];
+        }
+    }
 }
